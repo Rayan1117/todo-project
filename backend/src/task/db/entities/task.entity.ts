@@ -18,7 +18,7 @@ export class Task {
     @Column({name: 'is_completed'})
     isCompleted: boolean
 
-    @ManyToOne(() => User, (user: User) => user)
-    @JoinColumn({ name: 'user_id' })
+    @ManyToOne(() => User, (user: User) => user.userId)
+    @JoinColumn({name: "user_id"})
     userId: User
 }

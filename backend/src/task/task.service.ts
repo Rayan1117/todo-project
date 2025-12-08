@@ -13,7 +13,7 @@ export class TaskService {
     }
 
     async getTasks(userId: string): Promise<Task[]> {
-        const user = await this.userRepoService.findOne({where: {userId: userId}})
+        const user = await this.userRepoService.findOne({where: {userId}})
         if (!user) {
             throw new UserNotFoundException()
         }
