@@ -10,17 +10,7 @@ export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
     @Inject(UserService) userService: UserService;
-
-    @Get("/get-tasks")
-    async getAllTasks(): Promise<Task[]> {
-      try{
-      return await this.taskService.getAllTasks()
-      }
-      catch(err) {
-        return err.message
-      }
-    }
-
+    
     @UseGuards(AuthGuard('jwt'))
     @Get("/get-user-tasks")
     async getTask(@Req() req): Promise<Task[]> {

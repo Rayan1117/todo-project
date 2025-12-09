@@ -10,9 +10,6 @@ import { UserService } from 'src/user/user.service';
 @Injectable()
 export class TaskService {
     constructor(@InjectRepository(Task) private readonly taskRepoService: Repository<Task>, @Inject(UserService) private readonly userService: UserService) { }
-    async getAllTasks(): Promise<Task[]> {
-        return await this.taskRepoService.find()
-    }
 
     async getTasks(userId: string): Promise<Task[]> {
         const user = await this.userService.getUser(userId)
