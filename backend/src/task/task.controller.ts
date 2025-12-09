@@ -1,11 +1,15 @@
-import { Body, Controller, Get, Headers, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Inject, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { TaskDTO } from './DTO/task.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { UserService } from 'src/user/user.service';
 
 @Controller('task')
 
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
+
+    @Inject(UserService) userService: UserService;
 
     @Get("/get-tasks")
     async getAllTasks(): Promise<Task[]> {
@@ -17,9 +21,11 @@ export class TaskController {
       }
     }
 
-    @Get("/get-tasks/:userid")
-    async getTask(@Param('userid') userId: string): Promise<Task[]> {
+    @UseGuards(AuthGuard('jwt'))
+    @Get("/get-user-tasks")
+    async getTask(@Req() req): Promise<Task[]> {
       try {
+        const userId = await this.userService.getUID(req.user.email)
         return await this.taskService.getTasks(userId)
       }
       catch (err) {
@@ -27,6 +33,7 @@ export class TaskController {
       }
     }
 
+    @UseGuards(AuthGuard('jwt'))
     @Post("/create-task")
     async createTask(@Headers("authorization") userId: string, @Body() body: TaskDTO): Promise<string> {
       try{
