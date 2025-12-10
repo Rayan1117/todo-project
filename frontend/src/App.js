@@ -1,44 +1,84 @@
 import './App.css';
+import { useState } from 'react';
 
 function App() {
+
+  // States for Sign-In inputs
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  // ---------------- SIGN-IN FETCH ----------------
+  const handleSignIn = async () => {
+    const response = await fetch("http://localhost:3000/auth/sign-in", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: email,
+        password: password
+      })
+    });
+
+    const data = await response.json();
+    console.log(data.token);
+
+    // store user info or token
+    localStorage.setItem("user", JSON.stringify(data));
+
+    // move to next page
+    window.location.href = "/home"; 
+  };
+
+  // --------------- SIGN-UP -> NEXT PAGE ONLY ----------------
+  const handleSignUp = () => {
+    window.location.href = "/home";
+  };
+
   return (
     <div className="Todo-App">
+
       <div className='Card-1'>
-      <h1>Sign-Up</h1>
-      <input 
-        type="text"
-        placeholder="Enter email"
-      />
-      <br></br>
-      <input 
-        type="password"
-        placeholder="Enter password"
-      />
-      <br></br>
-    <button>Enter</button>
-    </div>
-    <div className='Card-2'>
-      <h1>Sign-In</h1>
-      <input 
-        type="text"
-        placeholder="Enter a email"
-      />
-       <br></br>
-      <input 
-        type="text"
-        placeholder="Enter a username"
-      />
-       <br></br>
-      <input 
-        type="password"
-        placeholder="Enter a password"
-      />
-       <br></br>
-    <button>Enter</button>
-    </div>
+        <h1>Sign-Up</h1>
+        <input 
+          type="text"
+          placeholder="Enter email"
+        />
+        <br />
+        <input 
+          type="password"
+          placeholder="Enter password"
+        />
+        <br />
+        <button onClick={handleSignUp}>Enter</button>
+      </div>
+
+      <div className='Card-2'>
+        <h1>Sign-In</h1>
+
+        <input 
+          type="text"
+          placeholder="Enter a email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <br />
+
+        <input 
+          type="text"
+          placeholder="Enter a username"
+        />
+        <br />
+
+        <input 
+          type="password"
+          placeholder="Enter a password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <br />
+
+        <button onClick={handleSignIn}>Enter</button>
+      </div>
+
     </div>
   );
 }
 
 export default App;
-
