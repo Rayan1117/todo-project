@@ -19,18 +19,13 @@ function App() {
     });
 
     const data = await response.json();
+    console.log(data);
+    
     console.log(data.token);
 
     // store user info or token
-    localStorage.setItem("user", JSON.stringify(data));
-
-    // move to next page
-    window.location.href = "/home"; 
-  };
-
-  // --------------- SIGN-UP -> NEXT PAGE ONLY ----------------
-  const handleSignUp = () => {
-    window.location.href = "/home";
+    localStorage.setItem("token", JSON.stringify(data.token));
+    document.location.href = "/home"
   };
 
   return (
@@ -41,39 +36,15 @@ function App() {
         <input 
           type="text"
           placeholder="Enter email"
+          onChange={(e) => setEmail(e.target.value)}
         />
         <br />
         <input 
           type="password"
           placeholder="Enter password"
-        />
-        <br />
-        <button onClick={handleSignUp}>Enter</button>
-      </div>
-
-      <div className='Card-2'>
-        <h1>Sign-In</h1>
-
-        <input 
-          type="text"
-          placeholder="Enter a email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <br />
-
-        <input 
-          type="text"
-          placeholder="Enter a username"
-        />
-        <br />
-
-        <input 
-          type="password"
-          placeholder="Enter a password"
           onChange={(e) => setPassword(e.target.value)}
         />
         <br />
-
         <button onClick={handleSignIn}>Enter</button>
       </div>
 
